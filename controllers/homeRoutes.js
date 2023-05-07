@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { User, Post } = require('../models');
+const { findByPk } = require('../models/Post');
 
 
 //Gets all post in db and displays them 
@@ -26,6 +27,28 @@ router.get('/', async (req, res) => {
 router.get('/login', async (req, res) => {
     try {
         res.render('login');
+    } catch (err) {
+        res.status(400).json(err);
+    }
+});
+
+router.get('/signup', async (req, res) => {
+    try {
+        res.render('signup');
+    } catch (err) {
+        res.status(400).json(err);
+    }
+});
+
+router.get('/dashboard', async (req, res) => {
+    try {
+        let userData = findByPk(req.session.user_id, {
+            include : [Post]
+        })
+
+        let user = userData.json();
+        console.log(json)
+        res.render('dashboard', {user});
     } catch (err) {
         res.status(400).json(err);
     }
