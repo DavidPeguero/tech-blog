@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { User, Post } = require('../models');
 const { findByPk } = require('../models/Post');
+const withAuth = require('../middleware/auth')
 
 
 //Gets all post in db and displays them 
@@ -9,7 +10,7 @@ router.get('/', async (req, res) => {
         let postData = await Post.findAll({
             include: [User]
         });
-        console.log(req.session.logged_in)
+        console.log(req.session.user_id)
 
         if (!postData) {
             res.status(404).json(postData);
@@ -49,9 +50,9 @@ router.get('/signup', async (req, res) => {
     }
 });
 
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', withAuth, async (req, res) => {
     try {
-        let userData = findByPk(req.session.user_id, {
+        let userData = await User.findByPk(req.session.user_id, {
             include : [Post]
         })
 
@@ -59,15 +60,16 @@ router.get('/dashboard', async (req, res) => {
         res.render('dashboard', {
             user,
             logged_in : req.session.logged_in,
+            user_id : req.session.user_id
         });
     } catch (err) {
         res.status(400).json(err);
     }
 });
 
-router.get('/editPost', async (req, res) => {
+router.get('/editPost', withAuth,async (req, res) => {
     try {
-        let userData = findByPk(req.session.user_id, {
+        let userData = await User.findByPk(req.session.user_id, {
             include : [Post]
         })
 
@@ -75,6 +77,7 @@ router.get('/editPost', async (req, res) => {
         res.render('dashboard', {
             user: user,
             logged_in : req.session.logged_in,
+            user_id : req.session.user_id
         });
     } catch (err) {
         res.status(400).json(err);
