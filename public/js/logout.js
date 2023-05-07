@@ -1,12 +1,12 @@
 const logout = async () => {
-  // TODO: Add a comment describing the functionality of this expression
+  event.preventDefault();
   const response = await fetch('/api/users/logout', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
   });
 
   if (response.ok) {
-    // TODO: Add a comment describing the functionality of this statement
+    console.log("I'm in")
     document.location.replace('/login');
   } else {
     alert('Failed to log out');
