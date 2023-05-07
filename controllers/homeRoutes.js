@@ -52,13 +52,16 @@ router.get('/signup', async (req, res) => {
 
 router.get('/dashboard', withAuth, async (req, res) => {
     try {
-        let userData = await User.findByPk(req.session.user_id, {
-            include : [Post]
+        let postData = await Post.findAll({
+            include : [User],
+            where : {
+                user_id : req.session.user_id
+            }
         })
 
-        let user = userData.get({plain : true});
+        let posts = postData.map((post) => post.get({ plain: true }))
         res.render('dashboard', {
-            user,
+            posts,
             logged_in : req.session.logged_in,
             user_id : req.session.user_id
         });
@@ -82,6 +85,10 @@ router.get('/editPost', withAuth,async (req, res) => {
     } catch (err) {
         res.status(400).json(err);
     }
+});
+
+router.get('/new-post', withAuth, async (req, res) => {
+    res.render('new-post');
 });
 
 

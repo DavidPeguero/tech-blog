@@ -1,4 +1,4 @@
-const logout = async () => {
+const logout = async (event) => {
   event.preventDefault();
   const response = await fetch('/api/users/logout', {
     method: 'POST',
@@ -6,7 +6,6 @@ const logout = async () => {
   });
 
   if (response.ok) {
-    console.log("I'm in")
     document.location.replace('/login');
   } else {
     alert('Failed to log out');
