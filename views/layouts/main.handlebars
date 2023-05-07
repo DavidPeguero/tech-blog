@@ -6,18 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tech Blog</title>
   <link rel="stylesheet" href="/css/jass.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-  <header class="display-flex justify-space-between align-center p-2">
-    <h1>
+  <header class="display-flex flex-column justify-space-between bg-primary  p-2">
+    <nav class="display-flex font-color-white">
+      <a class="m-1 font-color-white" href="../dashboard">Dashbord</a>
+      <a class="m-1 font-color-white" href="../login">Login</a>
+      <a class="m-1 font-color-white logout">Logout</a>
+    </nav>
+    
+    <h1 class="font-color-white">
       Tech Blog
     </h1>
-    {{#if logged_in}}
-    <nav>
-      <button class="btn" id="logout">logout</button>
-    </nav>
-    {{/if}}
   </header>
   <main class="container container-fluid mt-5">
     {{{ body }}}
