@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { where } = require('sequelize');
 const { Post, User } = require('../../models');
 const { findAll } = require('../../models/User');
 
@@ -9,6 +10,22 @@ router.post('/', async (req, res) => {
     const newPost = await Post.create({
       ...req.body,
       user_id: req.session.user_id,
+    });
+
+    res.status(200).json(newPost);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+
+router.put('/', async (req, res) => {
+  try {
+    const newPost = await Post.update({
+      ...req.body,
+      where : {
+        id : req.body.id
+      }
     });
 
     res.status(200).json(newPost);

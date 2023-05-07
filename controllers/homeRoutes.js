@@ -70,18 +70,20 @@ router.get('/dashboard', withAuth, async (req, res) => {
     }
 });
 
-router.get('/editPost', withAuth,async (req, res) => {
+router.get('/edit-post/:id', withAuth, async (req, res) => {
     try {
-        let userData = await User.findByPk(req.session.user_id, {
-            include : [Post]
+        let postData = await Post.findOne({
+            include : [User],
+            where: {
+                user_id : req.session.user_id,
+                id : req.params.id
+            }
         })
 
-        let user = userData.get()
-        res.render('dashboard', {
-            user: user,
-            logged_in : req.session.logged_in,
-            user_id : req.session.user_id
-        });
+        let post = postData.get({plain : true})
+        console.log(post)
+        res.render('edit-post', {post});
+
     } catch (err) {
         res.status(400).json(err);
     }
