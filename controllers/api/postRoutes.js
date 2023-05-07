@@ -19,18 +19,22 @@ router.post('/', async (req, res) => {
 });
 
 
-router.put('/', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
-    const newPost = await Post.update({
-      ...req.body,
-      where : {
-        id : req.body.id
-      }
-    });
-
-    res.status(200).json(newPost);
+    const newPost = await Post.update(
+      {
+        title: req.body.title,
+        body: req.body.body,
+      },
+      {
+        where: {
+          id: req.params.id,
+          user_id: req.session.user_id
+        }
+      });
+    res.status(200).json({ newPost, message: "Successfully Updated" })
   } catch (err) {
-    res.status(400).json(err);
+    res.status(400).json({ err, message: "what" });
   }
 });
 

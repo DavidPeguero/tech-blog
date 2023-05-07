@@ -79,6 +79,10 @@ router.get('/edit-post/:id', withAuth, async (req, res) => {
                 id : req.params.id
             }
         })
+        if (!postData){
+            res.redirect('/')
+            return;
+        }
 
         let post = postData.get({plain : true})
         console.log(post)
